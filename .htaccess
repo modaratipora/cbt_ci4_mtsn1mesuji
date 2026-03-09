@@ -1,0 +1,22 @@
+# -----------------------------------------------------------------------
+# Root .htaccess for CodeIgniter 4
+#
+# Redirect all requests to the /public directory.
+# This file is used when the web server's document root points to the
+# project root (not the public/ folder). If you configure your web server
+# (e.g., aaPanel) to use /public as the document root, this file is not
+# needed.
+# -----------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Redirect requests to the public folder
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ /public/$1 [L,QSA]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    # If mod_rewrite is not available, display a friendly message
+    ErrorDocument 404 /public/index.php
+</IfModule>
