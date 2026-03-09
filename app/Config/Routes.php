@@ -23,78 +23,93 @@ $routes->group('/admin', ['filter' => 'auth:admin'], static function ($routes) {
     $routes->get('dashboard', 'Admin\Dashboard::index');
 
     // Kelas
-    $routes->get('kelas',              'Admin\Kelas::index');
-    $routes->post('kelas',             'Admin\Kelas::store');
-    $routes->post('kelas/update/(:num)', 'Admin\Kelas::update/$1');
-    $routes->post('kelas/delete/(:num)', 'Admin\Kelas::destroy/$1');
+    $routes->get('kelas',                    'Admin\Kelas::index');
+    $routes->post('kelas/store',             'Admin\Kelas::store');
+    $routes->post('kelas/update/(:num)',     'Admin\Kelas::update/$1');
+    $routes->post('kelas/destroy/(:num)',    'Admin\Kelas::destroy/$1');
+    $routes->post('kelas/bulk-delete',       'Admin\Kelas::bulkDelete');
 
     // Mapel
-    $routes->get('mapel',               'Admin\Mapel::index');
-    $routes->post('mapel',              'Admin\Mapel::store');
-    $routes->post('mapel/update/(:num)', 'Admin\Mapel::update/$1');
-    $routes->post('mapel/delete/(:num)', 'Admin\Mapel::destroy/$1');
+    $routes->get('mapel',                    'Admin\Mapel::index');
+    $routes->post('mapel/store',             'Admin\Mapel::store');
+    $routes->post('mapel/update/(:num)',     'Admin\Mapel::update/$1');
+    $routes->post('mapel/destroy/(:num)',    'Admin\Mapel::destroy/$1');
+    $routes->post('mapel/bulk-delete',       'Admin\Mapel::bulkDelete');
 
     // Relasi Guru
-    $routes->get('relasi-guru',               'Admin\RelasiGuru::index');
-    $routes->post('relasi-guru',              'Admin\RelasiGuru::store');
-    $routes->post('relasi-guru/delete/(:num)', 'Admin\RelasiGuru::destroy/$1');
+    $routes->get('relasi-guru',              'Admin\RelasiGuru::index');
+    $routes->post('relasi-guru/store',       'Admin\RelasiGuru::store');
+    $routes->post('relasi-guru/destroy/(:num)', 'Admin\RelasiGuru::destroy/$1');
+    $routes->post('relasi-guru/bulk-delete', 'Admin\RelasiGuru::bulkDelete');
 
     // Guru
-    $routes->get('guru',                        'Admin\Guru::index');
-    $routes->post('guru',                       'Admin\Guru::store');
-    $routes->post('guru/update/(:num)',          'Admin\Guru::update/$1');
-    $routes->post('guru/delete/(:num)',          'Admin\Guru::destroy/$1');
-    $routes->post('guru/reset-password/(:num)',  'Admin\Guru::resetPassword/$1');
-    $routes->get('guru/import-template',         'Admin\Guru::importTemplate');
-    $routes->post('guru/import',                 'Admin\Guru::importTemplate');
+    $routes->get('guru',                          'Admin\Guru::index');
+    $routes->post('guru/store',                   'Admin\Guru::store');
+    $routes->post('guru/update/(:num)',            'Admin\Guru::update/$1');
+    $routes->post('guru/destroy/(:num)',           'Admin\Guru::destroy/$1');
+    $routes->post('guru/bulk-delete',             'Admin\Guru::bulkDelete');
+    $routes->post('guru/reset-password/(:num)',   'Admin\Guru::resetPassword/$1');
+    $routes->post('guru/bulk-reset-password',     'Admin\Guru::bulkResetPassword');
+    $routes->get('guru/import-template',          'Admin\Guru::importTemplate');
+    $routes->post('guru/import-excel',            'Admin\Guru::importExcel');
 
     // Siswa
-    $routes->get('siswa',                        'Admin\Siswa::index');
-    $routes->post('siswa',                       'Admin\Siswa::store');
-    $routes->post('siswa/update/(:num)',          'Admin\Siswa::update/$1');
-    $routes->post('siswa/delete/(:num)',          'Admin\Siswa::destroy/$1');
-    $routes->post('siswa/reset-password/(:num)', 'Admin\Siswa::resetPassword/$1');
-    $routes->get('siswa/import-template',        'Admin\Siswa::importTemplate');
-    $routes->post('siswa/import',                'Admin\Siswa::importTemplate');
+    $routes->get('siswa',                         'Admin\Siswa::index');
+    $routes->post('siswa/store',                  'Admin\Siswa::store');
+    $routes->post('siswa/update/(:num)',           'Admin\Siswa::update/$1');
+    $routes->post('siswa/destroy/(:num)',          'Admin\Siswa::destroy/$1');
+    $routes->post('siswa/bulk-delete',            'Admin\Siswa::bulkDelete');
+    $routes->post('siswa/bulk-reset-password',    'Admin\Siswa::bulkResetPassword');
+    $routes->get('siswa/import-template',         'Admin\Siswa::importTemplate');
+    $routes->post('siswa/import-excel',           'Admin\Siswa::importExcel');
 
     // Bank Soal
-    $routes->get('bank-soal',               'Admin\BankSoal::index');
-    $routes->post('bank-soal',              'Admin\BankSoal::store');
-    $routes->post('bank-soal/update/(:num)', 'Admin\BankSoal::update/$1');
-    $routes->post('bank-soal/delete/(:num)', 'Admin\BankSoal::destroy/$1');
+    $routes->get('bank-soal',                    'Admin\BankSoal::index');
+    $routes->post('bank-soal/store',             'Admin\BankSoal::store');
+    $routes->post('bank-soal/update/(:num)',     'Admin\BankSoal::update/$1');
+    $routes->post('bank-soal/destroy/(:num)',    'Admin\BankSoal::destroy/$1');
+    $routes->post('bank-soal/bulk-delete',       'Admin\BankSoal::bulkDelete');
 
-    // Soal
-    $routes->get('soal',               'Admin\Soal::index');
-    $routes->post('soal',              'Admin\Soal::store');
-    $routes->post('soal/update/(:num)', 'Admin\Soal::update/$1');
-    $routes->post('soal/delete/(:num)', 'Admin\Soal::destroy/$1');
-    $routes->post('soal/import',        'Admin\Soal::import');
+    // Soal (bank_soal_id scoped)
+    $routes->get('soal/(:num)',                        'Admin\Soal::index/$1');
+    $routes->post('soal/(:num)/store',                 'Admin\Soal::store/$1');
+    $routes->post('soal/(:num)/update/(:num)',         'Admin\Soal::update/$1/$2');
+    $routes->post('soal/(:num)/destroy/(:num)',        'Admin\Soal::destroy/$1/$2');
+    $routes->post('soal/(:num)/bulk-delete',           'Admin\Soal::bulkDelete/$1');
+    $routes->post('soal/(:num)/import-excel',          'Admin\Soal::importExcel/$1');
+    $routes->get('soal/(:num)/import-template',        'Admin\Soal::importTemplate/$1');
 
     // Ruang Ujian
-    $routes->get('ruang-ujian',                     'Admin\RuangUjian::index');
-    $routes->post('ruang-ujian',                    'Admin\RuangUjian::store');
-    $routes->post('ruang-ujian/update/(:num)',       'Admin\RuangUjian::update/$1');
-    $routes->post('ruang-ujian/delete/(:num)',       'Admin\RuangUjian::destroy/$1');
-    $routes->get('ruang-ujian/monitoring/(:num)',    'Admin\RuangUjian::monitoring/$1');
+    $routes->get('ruang-ujian',                        'Admin\RuangUjian::index');
+    $routes->post('ruang-ujian/store',                 'Admin\RuangUjian::store');
+    $routes->post('ruang-ujian/update/(:num)',         'Admin\RuangUjian::update/$1');
+    $routes->post('ruang-ujian/destroy/(:num)',        'Admin\RuangUjian::destroy/$1');
+    $routes->post('ruang-ujian/bulk-delete',           'Admin\RuangUjian::bulkDelete');
+    $routes->get('ruang-ujian/monitoring/(:num)',      'Admin\RuangUjian::monitoring/$1');
+    $routes->post('ruang-ujian/regenerate-token/(:num)', 'Admin\RuangUjian::regenerateToken/$1');
+    $routes->post('ruang-ujian/reset-ujian/(:num)',    'Admin\RuangUjian::resetUjian/$1');
+    $routes->post('ruang-ujian/bulk-reset-ujian',      'Admin\RuangUjian::bulkResetUjian');
+    $routes->get('ruang-ujian/export-excel/(:num)',    'Admin\RuangUjian::exportExcel/$1');
+    $routes->get('ruang-ujian/export-pdf/(:num)',      'Admin\RuangUjian::exportPDF/$1');
 
     // Pengumuman
-    $routes->get('pengumuman',               'Admin\Pengumuman::index');
-    $routes->post('pengumuman',              'Admin\Pengumuman::store');
-    $routes->post('pengumuman/update/(:num)', 'Admin\Pengumuman::update/$1');
-    $routes->post('pengumuman/delete/(:num)', 'Admin\Pengumuman::destroy/$1');
+    $routes->get('pengumuman',                   'Admin\Pengumuman::index');
+    $routes->post('pengumuman/store',            'Admin\Pengumuman::store');
+    $routes->post('pengumuman/update/(:num)',    'Admin\Pengumuman::update/$1');
+    $routes->post('pengumuman/destroy/(:num)',   'Admin\Pengumuman::destroy/$1');
 
-    // Administrator (manage admin accounts)
-    $routes->get('administrator',               'Admin\Administrator::index');
-    $routes->post('administrator',              'Admin\Administrator::store');
+    // Administrator
+    $routes->get('administrator',                'Admin\Administrator::index');
+    $routes->post('administrator/store',         'Admin\Administrator::store');
     $routes->post('administrator/update/(:num)', 'Admin\Administrator::update/$1');
-    $routes->post('administrator/delete/(:num)', 'Admin\Administrator::destroy/$1');
+    $routes->post('administrator/destroy/(:num)', 'Admin\Administrator::destroy/$1');
 
     // Settings
-    $routes->get('settings',        'Admin\Settings::index');
+    $routes->get('settings',         'Admin\Settings::index');
     $routes->post('settings/update', 'Admin\Settings::update');
 
     // Ubah Password
-    $routes->get('ubah-password',        'Admin\UbahPassword::index');
+    $routes->get('ubah-password',         'Admin\UbahPassword::index');
     $routes->post('ubah-password/update', 'Admin\UbahPassword::update');
 });
 
