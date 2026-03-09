@@ -144,17 +144,11 @@
                 </div>
                 <!-- Menjodohkan -->
                 <div id="menjodohkanOptions" class="hidden">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Pasangan Jawaban</label>
-                    <div class="grid grid-cols-2 gap-2 text-xs font-medium text-gray-500 mb-1">
-                        <span>Pernyataan (Kiri)</span><span>Pasangan (Kanan)</span>
-                    </div>
-                    <?php foreach (['a','b','c','d','e'] as $opt): ?>
-                    <div class="grid grid-cols-2 gap-2 mb-2">
-                        <input type="text" name="pilihan_<?= $opt ?>" id="jodoh_kiri_<?= $opt ?>" placeholder="Pernyataan <?= strtoupper($opt) ?>" class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400">
-                        <input type="text" name="kunci_menjodohkan" id="jodoh_kanan_<?= $opt ?>" placeholder="Pasangan <?= strtoupper($opt) ?>" class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400">
-                    </div>
-                    <?php endforeach; ?>
-                    <p class="text-xs text-gray-400">Jawaban benar diisi otomatis dari pasangan di atas.</p>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Kunci Menjodohkan</label>
+                    <p class="text-xs text-gray-400 mb-2">Format: Kiri|Kanan (satu pasang per baris). Contoh: <code>Ibu Kota Indonesia|Jakarta</code></p>
+                    <textarea name="kunci_menjodohkan" id="kunciMenjodohkanField" rows="5"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                        placeholder="Pertanyaan 1|Jawaban 1&#10;Pertanyaan 2|Jawaban 2"></textarea>
                 </div>
                 <!-- Jawaban Benar -->
                 <div id="jawabanBenarWrapper">
@@ -195,6 +189,7 @@ function openSoalModal() {
         const el = document.getElementById('pilihan_' + o);
         if (el) el.value = '';
     });
+    document.getElementById('kunciMenjodohkanField').value = '';
     document.getElementById('jawabanBenarSelect').value = 'A';
     onTipeChange('PG');
     document.getElementById('modalSoal').classList.remove('hidden');
@@ -210,6 +205,7 @@ function openEditSoalModal(data) {
         const el = document.getElementById('pilihan_' + o);
         if (el) el.value = data['pilihan_' + o] ?? '';
     });
+    document.getElementById('kunciMenjodohkanField').value = data.kunci_menjodohkan ?? '';
     document.getElementById('jawabanBenarSelect').value = data.jawaban_benar ?? 'A';
     onTipeChange(data.tipe_soal ?? 'PG');
     document.getElementById('modalSoal').classList.remove('hidden');
@@ -220,10 +216,10 @@ function closeSoalModal() {
 }
 
 function onTipeChange(tipe) {
-    const pgOpts      = document.getElementById('pgOptions');
-    const jodohOpts   = document.getElementById('menjodohkanOptions');
-    const jwbWrapper  = document.getElementById('jawabanBenarWrapper');
-    const jwbSelect   = document.getElementById('jawabanBenarSelect');
+    const pgOpts    = document.getElementById('pgOptions');
+    const jodohOpts = document.getElementById('menjodohkanOptions');
+    const jwbWrapper = document.getElementById('jawabanBenarWrapper');
+    const jwbSelect  = document.getElementById('jawabanBenarSelect');
 
     pgOpts.classList.add('hidden');
     jodohOpts.classList.add('hidden');
@@ -240,7 +236,6 @@ function onTipeChange(tipe) {
         jwbSelect.name = '';
     } else if (tipe === 'Menjodohkan') {
         jodohOpts.classList.remove('hidden');
-        pgOpts.classList.remove('hidden');
         jwbWrapper.classList.add('hidden');
         jwbSelect.name = '';
     }

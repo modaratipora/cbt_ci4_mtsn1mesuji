@@ -42,6 +42,8 @@ chown -R www-data:www-data writable/
 ```
 
 ### 7. Akun Default Login
+> **⚠️ PERINGATAN KEAMANAN**: Segera ubah semua password default setelah login pertama! Jangan gunakan akun default di lingkungan produksi.
+
 | Role  | Kredensial |
 |-------|-----------|
 | Admin | Email: admin@mtsn1.sch.id / Password: Admin@MTsN2026 |

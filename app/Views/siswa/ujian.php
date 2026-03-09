@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
     <style>
-        body { font-family: 'Inter', sans-serif; user-select: none; }
+        body { font-family: 'Inter', sans-serif; user-select: none; /* Exam mode: prevent copy during active exam */ }
         .toast-container { position: fixed; top: 1rem; right: 1rem; z-index: 9999; }
         .toast { padding: 0.75rem 1.25rem; border-radius: 0.5rem; color: white; min-width: 220px;
                  margin-bottom: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -239,7 +239,7 @@ function updateNavGrid() {
     SOAL_LIST.forEach((soal, idx) => {
         const btn    = document.getElementById('nav-' + idx);
         const jw     = jawaban[soal.id];
-        const hasJaw = jw && jw.jawaban !== null && jw.jawaban !== '' && jw.jawaban !== undefined;
+        const hasJaw = jw && jw.jawaban !== null && jw.jawaban !== undefined && jw.jawaban !== '';
         const isRagu = jw && jw.ragu;
 
         btn.className = 'nav-btn';
@@ -390,7 +390,10 @@ async function persistAnswer(soalId, jawabanVal, ragu) {
                 sisa_waktu: sisa_waktu,
             }),
         });
-    } catch {}
+    } catch {
+        // Auto-save failures are silently ignored; answers are held in memory
+        // and will be submitted when the student submits or time runs out.
+    }
 }
 
 // ─── Navigation ────────────────────────────────────────────────────────────────
@@ -411,7 +414,11 @@ function nextQuestion() {
 
 // ─── Submit ─────────────────────────────────────────────────────────────────────
 function confirmSubmit() {
-    const unanswered = SOAL_LIST.filter(s => !jawaban[s.id]?.jawaban && jawaban[s.id]?.jawaban !== 0).length;
+    // Count questions with no answer (null, undefined, or empty string)
+    const unanswered = SOAL_LIST.filter(s => {
+        const jw = jawaban[s.id];
+        return !jw || jw.jawaban === null || jw.jawaban === undefined || jw.jawaban === '';
+    }).length;
     const warn = document.getElementById('submitWarning');
     const warnText = document.getElementById('submitWarningText');
     if (unanswered > 0) {
@@ -463,23 +470,13 @@ async function doSubmit(autoSubmit = false) {
 }
 
 // ─── Tab/Focus Detection ────────────────────────────────────────────────────────
+// Use visibilitychange as the primary detection mechanism (more reliable than blur)
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
         keluarCount++;
         showToast(`Peringatan: Jangan berpindah halaman! (${keluarCount}/${BATAS_KELUAR})`, 'warning');
         if (BATAS_KELUAR > 0 && keluarCount >= BATAS_KELUAR) {
             showToast('Batas perpindahan halaman tercapai. Ujian disubmit otomatis.', 'error');
-            setTimeout(() => doSubmit(true), 1500);
-        }
-    }
-});
-
-window.addEventListener('blur', () => {
-    if (!document.hidden) {
-        keluarCount++;
-        showToast(`Peringatan: Jangan berpindah jendela! (${keluarCount}/${BATAS_KELUAR})`, 'warning');
-        if (BATAS_KELUAR > 0 && keluarCount >= BATAS_KELUAR) {
-            showToast('Batas perpindahan jendela tercapai. Ujian disubmit otomatis.', 'error');
             setTimeout(() => doSubmit(true), 1500);
         }
     }
