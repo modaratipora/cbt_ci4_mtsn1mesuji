@@ -1,0 +1,27 @@
+CRITICAL - 2026-03-09 08:32:01 --> CodeIgniter\Router\Exceptions\RouterException: The namespace delimiter is a backslash (\), not a slash (/). Route handler: "\App\Controllers\Admin/Dashboard::index"
+[Method: CLI, Route: routes]
+in VENDORPATH/codeigniter4/framework/system/Router/Router.php on line 523.
+ 1 VENDORPATH/codeigniter4/framework/system/Router/Router.php(523): CodeIgniter\Router\Exceptions\RouterException::forInvalidControllerName()
+ 2 VENDORPATH/codeigniter4/framework/system/Router/Router.php(225): CodeIgniter\Router\Router->checkRoutes()
+ 3 VENDORPATH/codeigniter4/framework/system/Commands/Utilities/Routes/FilterFinder.php(41): CodeIgniter\Router\Router->handle()
+ 4 VENDORPATH/codeigniter4/framework/system/Commands/Utilities/Routes/FilterFinder.php(57): CodeIgniter\Commands\Utilities\Routes\FilterFinder->getRouteFilters()
+ 5 VENDORPATH/codeigniter4/framework/system/Commands/Utilities/Routes/FilterCollector.php(78): CodeIgniter\Commands\Utilities\Routes\FilterFinder->find()
+ 6 VENDORPATH/codeigniter4/framework/system/Commands/Utilities/Routes.php(110): CodeIgniter\Commands\Utilities\Routes\FilterCollector->get()
+ 7 VENDORPATH/codeigniter4/framework/system/CLI/Commands.php(74): CodeIgniter\Commands\Utilities\Routes->run()
+ 8 VENDORPATH/codeigniter4/framework/system/CLI/Console.php(47): CodeIgniter\CLI\Commands->run()
+ 9 SYSTEMPATH/Boot.php(442): CodeIgniter\CLI\Console->run()
+10 SYSTEMPATH/Boot.php(166): CodeIgniter\Boot::runCommand()
+11 ROOTPATH/spark(87): CodeIgniter\Boot::bootSpark()
+CRITICAL - 2026-03-09 08:32:18 --> CodeIgniter\Filters\Exceptions\FilterException: "auth" filter must have a matching alias defined.
+[Method: CLI, Route: routes]
+in VENDORPATH/codeigniter4/framework/system/Filters/Filters.php on line 590.
+ 1 VENDORPATH/codeigniter4/framework/system/Filters/Filters.php(590): CodeIgniter\Filters\Exceptions\FilterException::forNoAlias()
+ 2 VENDORPATH/codeigniter4/framework/system/Filters/Filters.php(641): CodeIgniter\Filters\Filters->enableFilter()
+ 3 VENDORPATH/codeigniter4/framework/system/Commands/Utilities/Routes/FilterFinder.php(58): CodeIgniter\Filters\Filters->enableFilters()
+ 4 VENDORPATH/codeigniter4/framework/system/Commands/Utilities/Routes/FilterCollector.php(78): CodeIgniter\Commands\Utilities\Routes\FilterFinder->find()
+ 5 VENDORPATH/codeigniter4/framework/system/Commands/Utilities/Routes.php(110): CodeIgniter\Commands\Utilities\Routes\FilterCollector->get()
+ 6 VENDORPATH/codeigniter4/framework/system/CLI/Commands.php(74): CodeIgniter\Commands\Utilities\Routes->run()
+ 7 VENDORPATH/codeigniter4/framework/system/CLI/Console.php(47): CodeIgniter\CLI\Commands->run()
+ 8 SYSTEMPATH/Boot.php(442): CodeIgniter\CLI\Console->run()
+ 9 SYSTEMPATH/Boot.php(166): CodeIgniter\Boot::runCommand()
+10 ROOTPATH/spark(87): CodeIgniter\Boot::bootSpark()
