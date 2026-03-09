@@ -84,7 +84,7 @@ class Auth extends BaseController
         $nisn     = $this->request->getPost('nisn');
         $password = $this->request->getPost('password');
         $token    = $this->request->getPost('token');
-        $ruangId  = $this->request->getPost('ruang_id');
+        $ruangId  = (int) $this->request->getPost('ruang_id'); // cast to int to prevent open-redirect
 
         $siswaModel = new SiswaModel();
         $siswa      = $siswaModel->findByNISN($nisn);
